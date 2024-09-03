@@ -15,6 +15,8 @@ namespace PasswordManager.Services
         {
             _redisDb = redis.GetDatabase();
         }
+
+        /// <inheritdoc/>
         public async Task<bool> AddNewCombinationAsync(PasswordFeedback combination)
         {
             if (!_combinations.TryAdd(combination.Password, combination.Feedback))
@@ -24,11 +26,13 @@ namespace PasswordManager.Services
             return true;
         }
 
+        /// <inheritdoc/>
         public Task<int> GetCountAsync()
         {
             return Task.FromResult(_combinations.Count);
         }
 
+        /// <inheritdoc/>
         public async Task<string> GetHashByFeedbackAsync(string feedback)
         {
             var server = _redisDb.Multiplexer.GetServer(_redisDb.Multiplexer.GetEndPoints().First());
@@ -46,6 +50,7 @@ namespace PasswordManager.Services
             return null;
         }
 
+        /// <inheritdoc/>
         public async Task<string> GetPasswordAsync(string password)
         {
             var feedback = await _redisDb.StringGetAsync(password);
