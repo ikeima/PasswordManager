@@ -14,7 +14,11 @@ namespace PasswordManager.Controllers
         {
             _passwordFeedbackService = passwordFeedbackService;
         }
-
+        /// <summary>
+        /// Добавляет новую комбинацию пароль-отзыв
+        /// </summary>
+        /// <param name="combination"></param>
+        /// <returns></returns>
         [HttpPost("add")]
         public async Task<IActionResult> AddNewCombination([FromBody] PasswordFeedback combination)
         {
@@ -24,13 +28,21 @@ namespace PasswordManager.Controllers
             return BadRequest("Комбинация с таким паролем уже существует");
         }
 
+        /// <summary>
+        /// Получеает количество комбинаций
+        /// </summary>
+        /// <returns></returns>
         [HttpGet("count")]
         public async Task<IActionResult> GetCount()
         {
             var count = await _passwordFeedbackService.GetCountAsync();
             return Ok(count);
         }
-
+        /// <summary>
+        /// Полученает хэш пароля по отзыву
+        /// </summary>
+        /// <param name="feedback"></param>
+        /// <returns></returns>
         [HttpGet("hash")]
         public async Task<IActionResult> GetHashByFeedback([FromQuery] string feedback)
         {
@@ -39,9 +51,13 @@ namespace PasswordManager.Controllers
                 return Ok(hash);
             return NotFound("Пароль с таким отзывом не найден");
         }
-
-        [HttpGet("password")]
-        public async Task<IActionResult> GetPassword([FromQuery] string password)
+        /// <summary>
+        /// Получает отзыв по паролю
+        /// </summary>
+        /// <param name="password"></param>
+        /// <returns></returns>
+        [HttpGet("feedback")]
+        public async Task<IActionResult> GetFeedbackByPassword([FromQuery] string password)
         {
             var feedback = await _passwordFeedbackService.GetPasswordAsync(password);
             if (feedback != null)
